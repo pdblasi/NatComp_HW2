@@ -3,3 +3,75 @@
 \chapter{Evolutionary Algorithms - Text Chapter 3}
 
 \section{Problem 1}
+\textbf{Implement the various hill-climbing procedures and the simulated annealing algorithm to solve the problem exemplified in Equation~\ref{eqn_1.1}. Use a real-valued representation scheme for the candidate solutions (variable x).} \newline \\
+\textbf{By comparing the performance of the algorithms, what can you conclude?} \newline \\
+\textbf{For the simple hill-climbing try different initial configurations as attempts at finding the global optimum. Was this algorithm successful?} \newline \\
+\textbf{Discuss the sensitivity of all the algorithms in relation to their input parameters.} \newline \\
+\begin{equation}\label{eqn_1.1}
+g(x) = 2^{-2((x - 0.1) / 0.9)^2} * \sin(5 \pi x)^6
+\end{equation}
+
+
+\newpage
+\section{Problem 2}
+\textbf{Implement and apply the hill-climbing, simulated annealing, and genetic algorithms to maximize function $g(x)$ used in the previous exercise assuming a bitstring representation.} \newline \\
+\textbf{Tip: The pertubation to be introduced in the candidate solutions for the hill-climbing and simulated annealing algorithms may be implemented similarly to the point mutation in genetic algorithms. Note that in this case, no concern is required about the domain of x, because the binary representation already accounts for it.} \newline \\
+\textbf{Discuss the performance of the algorithms and asses their sensitivity in relation to the input parameters.}
+
+
+\newpage
+\section{Problem 7}
+\textbf{Determine, using genetic programming (GP), the computer program (S-expression) that produces exactly the outputs presented in Table 3.3 for each value of x. The following hypotheses are given:}
+\begin{itemize}
+\item \textbf{Use only functions with two arguments (binary trees).}
+\item \textbf{Largest depth allowed for each tree: 4}
+\item \textbf{Function set: F = {+, *}}
+\item \textbf{Terminal set: T = {0, 1, 2, 3, 4, 5, x}}
+\end{itemize}
+\centerline{\begin{tabular}{ c c }
+\hline
+x & Program output \\
+\hline
+-10 & 153 \\
+\hline
+-9 & 120 \\
+\hline
+-8 & 91 \\
+\hline
+-7 & 66 \\
+\hline
+-6 & 45 \\
+\hline
+-5 & 28 \\
+\hline
+-4 & 15 \\
+\hline
+-3 & 6 \\
+\hline
+-2 & 1 \\
+\hline
+-1 & 0 \\
+\hline
+0 & 3 \\
+\hline
+1 & 10 \\
+\hline
+2 & 21 \\
+\hline
+3 & 36 \\
+\hline
+4 & 55 \\
+\hline
+5 & 78 \\
+\hline
+6 & 105 \\
+\hline
+7 & 136 \\
+\hline
+8 & 171 \\
+\hline
+9 & 210 \\
+\hline
+10 & 253 \\
+\hline
+\end{tabular}}
