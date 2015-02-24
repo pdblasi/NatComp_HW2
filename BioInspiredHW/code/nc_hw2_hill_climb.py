@@ -58,14 +58,14 @@ print 'X = ', xbest1
 # 	if x' is better than best, best = x
 ###############################################################################
 best = 0.0
-besteval = 2.0 ** (-2.0 * ( ( best - 0.1 ) / 0.9 ) ** 2.0) * math.sin( 5.0 * math.pi * best ) ** 6.0
+besteval = 2.0 ** ( -2.0 * ( ( best - 0.1 ) / 0.9 ) ** 2.0 ) * math.sin( 5.0 * math.pi * best ) ** 6.0
 
 i = 0
 
 while (i < 1000) :
 	x = random.random()
 	x = simple_climb( x )
-	xeval = 2.0 ** (-2.0 * ( ( x - 0.1 ) / 0.9 ) ** 2.0) * math.sin( 5.0 * math.pi *x ) ** 6.0
+	xeval = 2.0 ** ( -2.0 * ( ( x - 0.1 ) / 0.9 ) ** 2.0 ) * math.sin( 5.0 * math.pi *x ) ** 6.0
 	if( xeval > besteval ):
 		best = x
 		besteval = xeval
@@ -87,7 +87,7 @@ print '\n', 'Iterated Hill Climb', '\n', 'X = ', best
 #		x = x'
 ###############################################################################
 x = random.random()
-xeval = 2.0 ** (-2.0 * ( ( x - 0.1 ) / 0.9 ) ** 2.0) * math.sin( 5.0 * math.pi * x ) ** 6.0
+xeval = 2.0 ** ( -2.0 * ( ( x - 0.1 ) / 0.9 ) ** 2.0 ) * math.sin( 5.0 * math.pi * x ) ** 6.0
 
 i = 0
 
@@ -97,9 +97,9 @@ while (i < 1000) :
 	while not ( xp <=1 and xp >= 0 ):
 		xp = x + np.random.normal( 0, 0.2 )
 	
-	xpeval = 2.0 ** (-2.0 * ( ( xp - 0.1 ) / 0.9 ) ** 2.0) * math.sin( 5.0 * math.pi *xp ) ** 6.0
+	xpeval = 2.0 ** ( -2.0 * ( ( xp - 0.1 ) / 0.9 ) ** 2.0 ) * math.sin( 5.0 * math.pi *xp ) ** 6.0
 	
-	p = 1.0 / (1.0 + math.exp( (xeval - xpeval) / 0.8 ) )
+	p = 1.0 / ( 1.0 + math.exp( (xeval - xpeval) / 0.01 ) )
 	if random.random() < p :
 		x = xp
 		xeval = xpeval
