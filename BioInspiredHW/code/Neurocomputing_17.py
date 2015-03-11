@@ -29,24 +29,24 @@ def backprop( max_it, min_err, alpha, X, D ):
 			i <- vet_permute( j )			# present patterns randomly
 			
 			# forward propagation of the functional signal
-			# eq 4.37
+			# eq 4.37: y^0 = x
 			
-			for m from O to M-1:
-				# eq 4.36
+			for m from 0 to M-1:
+				# eq 4.36: y(m+1) = f(M+1) * ( W(m+1)*y(m) + b(m+1) )
 				
 			# backprop of sensitivitites
-			# eq 4.65
+			# eq 4.65: del(M) = -2*Fdot(m) * u(m) * ( d - y)
 			
 			for m from M-1 to 1:
-				# eq 4.60
+				# eq 4.60: Fdot(m) * u(m) * W(m+1)^T * del(m+1)
 			
 			# update weights and biases
 			for m from 1 to M:
-				# eq 4.52
-				# eq 4.53
+				# eq 4.52: W(m)[t+1] = W(m)[t] - alpha*del(m)*(y(m-1))^T
+				# eq 4.53: b(m)[t+1] = b(m)[t] - alpha*del(m)
 				
 			# calculate the error for pattern i
-			# equation in book
+			# E(i) <- e(i)^T * e(i) = ( d(i)-y(i) )^T * ( d(i)- y(i) )
 		
 		MSE <- 1 / N.sum( Ei )		# Mean Square Error
 		t += 1
@@ -59,3 +59,10 @@ import numpy as np
 import math
 
 # will want to use np.matlib and np.matrix
+
+# initial values
+max_it = 1000
+min_err = 1
+alpha = 1
+
+# load training images (10 of them, 0-9)

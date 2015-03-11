@@ -11,6 +11,33 @@
 g(x) = 2^{-2((x - 0.1) / 0.9)^2} * \sin(5 \pi x)^6
 \end{equation}
 
+Simple Hill Climb: \\
+
+In the simple hill climb algorithm, a point is randomly selected in the search space, evaluated, slightly perturbed and re-evaluated until either a max iteration value or non-signifacant change happens.  This algorithm easily finds local maximums or minimums but can miss the global extrema since there is no way to `escape' a local extrema.\\
+
+Iterated Hill Climb: \\
+
+The iterated hill climb algorithm repeats the simple hill climb for a specified number of loops, with random starting points each time, and keeps track of the best solution. Since this simply reruns simple hill climb over and over with different starting points, local extremas can be `escaped' or `ignored' and the global extrema found. \\
+
+Stochastic Hill Climb: \\
+
+The stochastic hill climb is quite similar to the simple hill climb, with one change that makes a significant difference. When the point is perturbed, it is perturbed randomly and its acceptance as a new point is probabilistically determined with Equation~\ref{eqn_1.2} The value of T plays an imporant part in this equation. T determines the decay of the exponential function. In plain words, T determines how important the relative difference between the evaluation of x and x' is. A large T will make the search very similar to a random search and does not provide consistent results. When T is small, local extremas can be escaped and gloabl extremas found with fairly consistent results.  \\
+
+\begin{equation}\label{eqn_1.2}
+P = 1 / ( 1 + exp[ ( eval(x) - eval(x') ) / T ] )
+\end{equation}
+
+A few sample runs of the various hill climb algorthims can be found in Figure~\ref{hill_climb}.
+
+
+%\begin{figure}[tbh]
+%\begin{center}
+%\graphicspath{ {/BioInspiredHW/resources/} }
+%\includegraphics[width=0.75\textwidth]{/HillClimb.PNG}
+%\end{center}
+%\caption{Sample Hill Climb Algorithms Answers \label{hill_climb} }
+%\end{figure}
+
 
 \newpage
 \section{Problem 2}
