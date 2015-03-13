@@ -21,7 +21,7 @@ The iterated hill climb algorithm repeats the simple hill climb for a specified 
 
 Stochastic Hill Climb: \\
 
-The stochastic hill climb is quite similar to the simple hill climb, with one change that makes a significant difference. When the point is perturbed, it is perturbed randomly and its acceptance as a new point is probabilistically determined with Equation~\ref{eqn_1.2} The value of T plays an imporant part in this equation. T determines the decay of the exponential function. In plain words, T determines how important the relative difference between the evaluation of x and x' is. A large T will make the search very similar to a random search and does not provide consistent results. When T is small, local extremas can be escaped and gloabl extremas found with fairly consistent results.  \\
+The stochastic hill climb is quite similar to the simple hill climb, with one change that makes a significant difference. When the point is perturbed, it is perturbed randomly and its acceptance as a new point is probabilistically determined with Equation~\ref{eqn_1.2} The value of T plays an important part in this equation. T determines the decay of the exponential function. In plain words, T determines how important the relative difference between the evaluation of x and x' is. A large T will make the search very similar to a random search and does not provide consistent results. When T is small, local extremas can be escaped and global extremas found with fairly consistent results.  \\
 
 \begin{equation}\label{eqn_1.2}
 P = 1 / ( 1 + exp[ ( eval(x) - eval(x') ) / T ] )
