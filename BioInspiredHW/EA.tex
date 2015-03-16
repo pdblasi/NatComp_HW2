@@ -125,3 +125,56 @@ x & Program output \\
 10 & 253 \\
 \hline
 \end{tabular}}
+
+\subsubsection{Summary}
+For this problem we originally intended to use BNF encoding and the related crossover and mutation operators with it. We were not able to get BNF encoding to work well as we were unsure of how to validate a string of integers as being a valid string. We then moved to an adapted simple genetic algorithm that worked on a prefix format equation. From that point validating the string, and that the resulting tree was limited to a depth of four was much easier.
+
+\subsubsection{Encoding}
+As stated above the encoding is as a prefix formatted equation. This format is easy to do crossover with (when we set the format of the equation in stone), but mutation has to check for two different cases of mutation. One for operators and one for terminals. The operators and terminals are given from the problem and explicitly stated below. \\
+\centerline{
+\begin{tabular}{| c | c |}
+\hline
+Operators & Terminals \\
+\hline
+	& 0 \\
+	& 1 \\
++	& 2 \\ 
+*	& 3 \\
+	& 4 \\
+	& 5 \\
+	& x \\
+\hline
+\end{tabular}} \\
+
+To simplify the encoding process, we started with a default encoding and then used the mutation operator to randomize the initial population. The default encoding can be seen below. \\
+
+\centerline{+ + + 0 0 + 0 0 + + 0 0 + 0 0} \hfill \\
+
+This evaluates to the following tree:
+
+\centerline{
+\begin{minipage}{.5\linewidth}
+\centerline{+ } \hfill \\
+\centerline{\hfill + \hfill + \hfill } \hfill \\
+\centerline{\hfill + \hfill + \hfill + \hfill + \hfill } \hfill \\
+\centerline{\hfill 0 \hfill 0 \hfill 0 \hfill 0 \hfill  0 \hfill 0 \hfill 0 \hfill 0 \hfill} \hfill \\
+\end{minipage}}
+
+As you can see, this is not a particularly useful individual, so we copy it and randomize it through mutation to sample the search space.
+
+\subsubsection{Crossover \& Mutation}
+Crossover was even simpler in this problem than in the previous. Our prefix equation was stored as a list of strings, so we split the list at a random crossover point and split and recombined the mother and father into a child.
+
+Mutation was more complicated in this problem but only marginally so. The complication was that there are two parts to the individuals using our encoding. There were the operators and the terminals. Since the locations of these are fixed, we stored the locations of each in a separate list, and if our randomly selected mutation index is in the operator index list we replace the value with a random operator. If the mutation index is in the terminals index list we replace the value with a random terminal.
+
+\subsubsection{Selection}
+The roulette selection operator from the previous problem was reused. To make it work properly, the evaluation function had to be modified significantly. Our first instinct was to add up the difference between the expected and found values. This was easy to implement so we went with it, but this evaluation function does the exact opposite of what we want. It creates high values for less fit individuals. We solved this by finding the maximum value and then replacing every individual's fitness with $(max - fitness) / max$. This normalized the values between 0 and 1 and made them be the proper fitness relative to each other.
+
+\subsubsection{Analysis}
+The hardest part of this problem was to choose a good representation for the individuals. The prefix notation worked well and forcing a format that expanded to a full depth four tree simplified a lot of the process.
+
+When using a population of 250 and up to 1000 iterations (up to because we can short circuit the process if we find a perfect solution) we calculated a \%100 match 100 times out of 100. The full list of these can be found in Appendix~\ref{results.out}.
+
+Because we didn't want to fully analyze 100 different prefix notation equations, we randomly picked 10 to evaluate. These are listed below.
+
+
