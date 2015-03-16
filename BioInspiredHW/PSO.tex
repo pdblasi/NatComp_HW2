@@ -4,55 +4,54 @@
 
 \section{ Problem 1 }
 \textbf{Write a pseudocode for the simple ACO (S-ACO) algorithm considering pheromone evaportation, implement it computationally, and apply it to solve the TSP instance presented in Section 3.10.4. Discuss the results obtained.} \newline \\
-\textbf{Remove the pheromone evaportation term (Equation ~\ref{eqn_5.3}), apply the alogorithm to the same problem, and discuss the results obtained.}
+\textbf{Remove the pheromone evaportation term (Equation ~\ref{eqn5.3}), apply the alogorithm to the same problem, and discuss the results obtained.}
 
-\begin{equation} \label{eqn_5.3}
+\begin{equation} \label{eqn5.3}
 \tau_{ij}(t) \leftarrow ( 1-\rho ) \tau_{ij}(t) + \Delta \tau
 \end{equation}
 
 % Problem 1 Discussion
+The pseudocode for the simple ant colony optomization is presented in subsection ~\ref{acoPseudo}. This pseudocode has gone through a few revisions as code was written and moments of ``That's not going to work.'' occured. Currently, the code is written to read in cities locations from a file and create edges to form a complete graph with associated distances, pheromone, and visibilties. Next, a solution for each ant is built. A node is randomly selected for the starting point, a probability list (for moving to the next unvisited node) is constructed using Equation ~\ref{eqn5.5}, a random value is generated and checked against the probability list to see which node is next moved to. The selected node is then removed from the available nodes list and added to the visited list. Pheromone is also added to the edge. This repeats for each node until all nodes have been traversed.
 
-\begin{equation} \label{eqn_5.1}
-
+\begin{equation} \label{eqn5.5}
 p_{ij}^{k}(t) = 
 	\begin{cases}
-
-	\frac{ \tau_{ij}(t) } { \Sigma_{j N_i } \tau_{ij}(t)} & \text{if} j \in N_i \\
+	\frac{ [\tau_{ij}(t)]^\alpha [\eta_{ij}]^\beta} {\Sigma_{l \in J_i^k}[\tau_{il}(t)]^\alpha[\eta_{il}]^\beta } & \text{if} j \in J_i^k \\
 	0 	& \text{otherwise} \\
-
 	\end{cases}
-
 \end{equation}
 
+This part is currently not coded, but here is the plan of attack. Once the visited list for each ant has been built, the fitness of each path will be evaluated. To determine the fitness, it will simply be the total length of all edges. The most fit path will be the shortest path. Then, Equation ~\ref{eqn5.2} is applied to all edges to simulate the `evaporation' of pheromones. 
 
-\begin{equation} \label{eqn_5.2}
+\begin{equation} \label{eqn5.2}
 \tau_{ij}(t) \leftarrow \tau_i(t) + \Delta \tau
 \end{equation}
 
+As the code is unfinished, a comparison between an algorithm that includes evaporation and an algorithm that does not include evaporation is not possible.
+
 % S-ACO pseudocode
-\subsection{ S-ACO Pseudocode }
+\subsection{ S-ACO Pseudocode } \label{acoPseudo}
 \begin{lstlisting}
-SACO( int max_it, N, tau_not )
+SACO( max_it, ants, edges )
 {
-	intialize tau_y 	// usually the same as tau_not
-	initialize best
 	place each ant, k, on a randomly selected node
 	t = 0
 	while ( t < max_it )
 	{
-		// each ant
-		for( i = 1; N; i++)
+		// for each ant
+		for( i = 1; ants; i++)
 		{
-			// build solution using a probabilistic move rule ( e-1 times )
-			// rule is \label{eqn_5.1}
-			// e is the number of graph edges
+			// calculate probability of moving to each untraveled node
+			// use probabalistic move rule to determine next node
+			// mark new node as traveled
+			// add node to traveled path
 		}
 		
 		// evaluate cost of each solution
 		if ( solution < best )
 			best = solution
 
-		//update pheromone trails using equation \label{eqn_5.3}
+		//update pheromone trails
 		t++
 	}
 }
@@ -61,3 +60,5 @@ SACO( int max_it, N, tau_not )
 
 \section{ Problem 8 }
 \textbf{Apply the PS algorithm described in Section 5.4.1 to the maximization problem of Example 3.3.3. Compare the relative performance of the PS algorithm with that obtained using a standard genetic algorithm.}
+
+Currently, only the code presented in class has been written and attributed to Dr. McGough.
