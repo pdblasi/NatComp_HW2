@@ -41,11 +41,11 @@ class EA:
         self.population_size = population_size
         self.child_population_size = self.population_size // 2
         self.mutation_rate = mutation_rate
-        self.population = np.random.random_integers(0, 32767, self.population_size).astype(np.int16)
+        self.population = np.random.random_integers(0, 65535, self.population_size).astype(np.uint16)
         self.population_eval = np.zeros(dtype=np.float, shape=(self.population_size))
-        self.__next_population = np.zeros(dtype=np.int16, shape=(self.population_size  + self.child_population_size))
+        self.__next_population = np.zeros(dtype=np.uint16, shape=(self.population_size  + self.child_population_size))
         self.__next_population_eval = np.zeros(dtype=np.float, shape=(self.population_size + self.child_population_size))
-        self.__child_population = np.zeros(dtype=np.int16, shape=(self.child_population_size))
+        self.__child_population = np.zeros(dtype=np.uint16, shape=(self.child_population_size))
         self.__child_population_eval = np.zeros(dtype=np.float, shape=(self.child_population_size))
         self.__child_pop_indices = range(self.child_population_size)
         self.__pop_indices = range(self.population_size)
@@ -59,12 +59,11 @@ class EA:
             if self.population_eval[i] > max:
                 max = self.population_eval[i]
                 index = i
-        print(self.binary_format.format(self.population[index]), "Value:", max)
+        print(self.binary_format.format(self.population[index]), "\nX:", np.float32(self.population[index]) / 65535, "Y:", max, "\n")
 
     def evaluate(self, pop, eval):
-        pop.size
         for i in range(pop.size):
-            x = np.float32(pop[i]) / 32767
+            x = np.float32(pop[i]) / 65535
             eval[i] = (2 ** (-2 * (((x - 0.1)/.9) * ((x - 0.1)/.9))) * math.sin(5 * math.pi * x) ** 6)
 
     def select_indices(self, count, eval):
@@ -79,13 +78,9 @@ class EA:
             index = 0
             curr = eval[unused[index]]
 
-            try:
-                while (rand - curr) < 1e-10:
-                    index = index + 1
-                    curr = curr + eval[unused[index]]
-            except:
-                print("Index:", index, "Unused:", "len({0})".format(len(unused)), unused)
-                print("Random:", rand, "Curr:", curr, "Last Added:", eval[unused[index - 1]])
+            while curr < rand and index < len(unused) - 1:
+                index = index + 1
+                curr = curr + eval[unused[index]]
 
             sum = sum - eval[unused[index]]
             indices.append(unused.pop(index))
@@ -129,16 +124,16 @@ class EA:
 
             for j in self.__pop_indices:
                 self.population[j] = self.__next_population[indices[j]]
-                self.population[j] = self.__next_population_eval[indices[j]]
+                self.population_eval[j] = self.__next_population_eval[indices[j]]
 
             if i != iterations and i % printEvery == 0:
                 self.print_best();
 
+        print("\nSOLUTION\n--------")
         self.print_best();
 
 
 
 if __name__ == '__main__':
-    test = EA(200, .01)
-    test.run(1000, 10)
-    print("hello world.")
+    test = EA(250, .1)
+    test.run(250, 1)
