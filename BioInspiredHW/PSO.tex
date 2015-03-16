@@ -2,6 +2,62 @@
 
 \chapter{Swarms - Text Chapter 5}
 
+\section{ Problem 1 }
+\textbf{Write a pseudocode for the simple ACO (S-ACO) algorithm considering pheromone evaportation, implement it computationally, and apply it to solve the TSP instance presented in Section 3.10.4. Discuss the results obtained.} \newline \\
+\textbf{Remove the pheromone evaportation term (Equation ~\ref{eqn_5.3}), apply the alogorithm to the same problem, and discuss the results obtained.}
+
+\begin{equation} \label{eqn_5.3}
+\tau_{ij}(t) \leftarrow ( 1-\rho ) \tau_{ij}(t) + \Delta \tau
+\end{equation}
+
+% Problem 1 Discussion
+
+\begin{equation} \label{eqn_5.1}
+
+p_{ij}^{k}(t) = 
+	\begin{cases}
+
+	\frac{ \tau_{ij}(t) } { \Sigma_{j N_i } \tau_{ij}(t)} & \text{if} j \in N_i \\
+	0 	& \text{otherwise} \\
+
+	\end{cases}
+
+\end{equation}
 
 
+\begin{equation} \label{eqn_5.2}
+\tau_{ij}(t) \leftarrow \tau_i(t) + \Delta \tau
+\end{equation}
 
+% S-ACO pseudocode
+\subsection{ S-ACO Pseudocode }
+\begin{lstlisting}
+SACO( int max_it, N, tau_not )
+{
+	intialize tau_y 	// usually the same as tau_not
+	initialize best
+	place each ant, k, on a randomly selected node
+	t = 0
+	while ( t < max_it )
+	{
+		// each ant
+		for( i = 1; N; i++)
+		{
+			// build solution using a probabilistic move rule ( e-1 times )
+			// rule is \label{eqn_5.1}
+			// e is the number of graph edges
+		}
+		
+		// evaluate cost of each solution
+		if ( solution < best )
+			best = solution
+
+		//update pheromone trails using equation \label{eqn_5.3}
+		t++
+	}
+}
+\end{lstlisting}
+
+
+\section{ Problem 8 }
+\textbf{Apply the PS algorithm described in Section 5.4.1 to the maximization problem of Example 3.3.3. Compare the relative performance of the PS algorithm with that obtained using a standard genetic algorithm.}
