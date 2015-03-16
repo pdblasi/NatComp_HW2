@@ -30,13 +30,12 @@ P = 1 / ( 1 + exp[ ( eval(x) - eval(x') ) / T ] )
 A few sample runs of the various hill climb algorthims can be found in Figure~\ref{hill_climb}.
 
 
-%\begin{figure}[tbh]
-%\begin{center}
-%\graphicspath{ {/BioInspiredHW/resources/} }
-%\includegraphics[width=0.75\textwidth]{/HillClimb.PNG}
-%\end{center}
-%\caption{Sample Hill Climb Algorithms Answers \label{hill_climb} }
-%\end{figure}
+\begin{figure}[tbh]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{HillClimb.PNG}
+\end{center}
+\caption{Sample Hill Climb Algorithms Answers \label{hill_climb} }
+\end{figure}
 
 
 \newpage
@@ -44,6 +43,30 @@ A few sample runs of the various hill climb algorthims can be found in Figure~\r
 \textbf{Implement and apply the hill-climbing, simulated annealing, and genetic algorithms to maximize function $g(x)$ used in the previous exercise assuming a bitstring representation.} \newline \\
 \textbf{Tip: The pertubation to be introduced in the candidate solutions for the hill-climbing and simulated annealing algorithms may be implemented similarly to the point mutation in genetic algorithms. Note that in this case, no concern is required about the domain of x, because the binary representation already accounts for it.} \newline \\
 \textbf{Discuss the performance of the algorithms and asses their sensitivity in relation to the input parameters.}
+
+\subsection{Summary}
+Expanding on the evaluations in the previous problem we add a simple genetic algorithm to the mix. As mentioned, many of the solutions above can find themselves caught in a local extrema for many optimization problems. The genetic algorithm (granted a large enough initial population) avoids this problem by sampling a larger area of the search space.
+
+\subsection{Implementation}
+The code can be found in Listing~\ref{Problem2EA.py}.
+
+\subsubsection{Encoding}
+For the gene encoding, we used an unsigned 16 bit integer. This gave us an easy way to store 16 bits. Since we know the domain of the problem is restricted to $[0, 1]$ decoding the genotype into a phenotype was done by dividing the integer value of the bit string by the maximum value of a 16 bit integer (65535). Because the values are stored as integers, we can use numpy's random\_integers function to initialize the population.
+
+\subsubsection{Crossover \& Mutation}
+Crossover and mutation were handled by binary operations. Binary masks were stored in lists for each operator and a random index into those lists was generated to pick the mask used.
+
+For mutation the individual was XOR'd with the mask to flip the proper bit. For crossover one parent was AND'd with the chosen mask and the other was AND'd with that masks negation. These values were then OR'd together to make the child individual.
+
+\subsubsection{Selection}
+Since our fitness values were simply the y values of the function and maximizing the function was the goal, a simple roulette selection method was chosen.
+
+To avoid having to mess with the list of fitness values, an unused index list is created, and this is what the indexes are chosen from. Iterating through the unused list we add the value at that list to a variable until it is greater than or equal to a random value between 0 and the summation.
+
+Between choosing each index the value at the chosen index is subtracted from the sum to avoid having to sum the unused values again. Unfortunately, since this uses floating point calculations it occasionally didn't reach the sum before the algorithm ran out of indexes. We fixed this problem by defaulting to the last index if the sum hasn't been reached by that point.
+
+\subsection{Analysis}
+Through multiple runs with different parameters, it was found that a genetic algorithm could solve this problem consistently with an initial population as low as 10 individuals in 250 iterations. The fastest consistent solution came from runs with around 100 individuals and 100 iterations. If more iterations were run it was able to get more precise, giving an answer of .0999923704891 for a max of .999999956813. Taking into account that the encoding isn't perfect this probably means we have the global max at .1 with a value of 1.
 
 
 \newpage
