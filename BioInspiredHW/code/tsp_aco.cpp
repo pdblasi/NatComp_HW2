@@ -17,7 +17,9 @@ struct Edge
 	int city2;		
 	int pheromone;		// amount of pheromone
 	float distance;		// distance between cities
-	bool visit;		// if edge has been visited
+	float visibility;	
+	bool visit;			// if edge has been visited
+	
 };
 
 // Function prototypes
@@ -28,8 +30,15 @@ void saco( int max_it, int ants, Edge edges[31][31] )
 	int tau_y = 0;
 	int best[31];
 	int paths[ants][31];
-	int i, j, t = 0;
-	int start = 0;
+	int i, j, k, m, t = 0;
+	int curr = 0;
+	int city_traveled [31] = {0};
+	int path_counter = 0;
+	float alpha = 0.5;
+	float beta = 0.0;
+	float sum = 0.0;
+	float probability = 0.0;
+	float probabilities[31];
 
 	while( t < max_it )
 	{
@@ -37,18 +46,65 @@ void saco( int max_it, int ants, Edge edges[31][31] )
 		for( i = 0; i < ants; i++ )
 		{
 			// place on random starting node
-			start = rand()%32;
-			best[0] = start;
-
-			// probablastically move to next node	
-			for( j = 0; j < 32; j++ )
+			curr = rand()%32;
+			paths[i][0] = curr;
+			path_counter++;
+			city_traveled[curr] = 1;
+			
+			while(path_counter < 32)
 			{
-				if( j == start )
+			
+				// find sum of pheromones on remaining untraveled edges
+				j = 0;
+				sum = 0;
+				for( j = 0; j < 32; j++ )
+				{
+					if( city_traveled[j] == 0 )
+					{
+						sum += edges[curr][j].pheromone;
+					}
 
-				move = 0;
+				}
+				
+				j = 0;
+
+				// generate probability list for current node
+				for( j = 0; j < 32; j++ )
+				{
+					if( city_traveled[j] == 0 )
+					{	
+						probability = ( pow(edges[curr][j].pheromone,alpha )*
+							pow(edges[curr][j].visibility,beta))/
+							(sum * pow(edges[curr][j].visibility, beta ) );
+						probabilities[j] = probability;
+					}
+					else if( city_traveled[j] == 1 )
+						probabilities[j] = probability;
+					j++;
+				}
+
+				// create move chance
+				double move = ( (double)rand()/(RAND_MAX) ) ;
+				
+				for( int z = 0; z < 32; z++ )
+				{
+					if( probabilities[z] > move )
+					{
+						city_traveled[j] = 1;
+						paths[i][path_counter] = j;
+						path_counter++;
+						curr = z;
+						break;
+					}
+				}
+	 	
 			}
-
-		}
+			
+			// reset all information to zero for next ant
+			for( k = 0; k < 32; k++ )
+				city_traveled[k] = 0;
+			path_counter = 0;
+			}
 
 		//evaluate solutions
 		t++;
@@ -98,11 +154,12 @@ int main()
 			edges[i][j].distance = sqrt( xdist + ydist );
 			edges[i][j].pheromone = 1;
 			edges[i][j].visit = false;
+			edges[i][j].visibility = 1 / edges[i][j].distance;
 		}
 	}
 	
 	// run simple aco
-	saco( 100, 100, edges );
+	saco( 100, 32, edges );
 	
 	srand( time(NULL) );
 	
