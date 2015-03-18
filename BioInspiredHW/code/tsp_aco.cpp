@@ -33,13 +33,12 @@ void prob_list( int curr, int sum_p, float probabilities[31], int city_traveled[
 float saco( int max_it, int ants, Edge edges[31][31] )
 {
 	int paths[ants][31];
-	int i, j, k, m, t = 0;
+	int i, j, k, t = 0;
 	int curr = 0;
 	int city_traveled [31] = {0};
 	int path_counter = 0;
 
 	float sum_p = 0.0;
-	float probability = 0.0;
 	float probabilities[31];
 	float path_try;
 	float path_best = 10000.0;
@@ -47,7 +46,7 @@ float saco( int max_it, int ants, Edge edges[31][31] )
 	while( t < max_it )
 	{
 		// build a solution for each ant
-		for( i = 0; i < 1; i++ )
+		for( i = 0; i < ants; i++ )
 		{
 			
 			cout << "ant number: " << i << endl;
@@ -59,21 +58,21 @@ float saco( int max_it, int ants, Edge edges[31][31] )
 			city_traveled[curr] = 1;
 			cout << "rand curr: " << curr << endl;
 			
-			while(path_counter < 2)
+			while(path_counter < 32)
 			{
 				//cout << "path count: " << path_counter << endl;
 	
 				// find sum of pheromones on remaining untraveled edges
 				sum_p = 0;
-				//sum_p = sum_pheromone( curr, city_traveled, edges );
+				sum_p = sum_pheromone( curr, city_traveled, edges );
 				// array is not being filled correctly!
 
 				//cout << "Sum pheromone: " << sum_p << endl;
 				//cout << "curr: " << curr << endl;
-				path_counter ++;
+				//path_counter ++;
 
 				//spoof sum_p for debugging other functions
-				sum_p = 32 - path_counter;
+				//sum_p = 32 - path_counter;
 
 				// generate probability list for current node
 				prob_list( curr, sum_p, probabilities, city_traveled, edges );
@@ -109,10 +108,10 @@ float saco( int max_it, int ants, Edge edges[31][31] )
 
 		
 		// evaluate paths
-		//path_try = path_eval( paths, edges ); 	
-		//if( path_try < path_best)
-	//		path_best = path_try;
-//		cout << "path eval" << endl;
+		path_try = path_eval( paths, edges ); 	
+		if( path_try < path_best)
+			path_best = path_try;
+		//cout << "path eval" << endl;
 
 		// time for next iteration!
 		t++;
@@ -126,7 +125,7 @@ float path_eval( int paths[][31], Edge edges[31][31] )
 {
 	float path_best = 100000.0;
 	float path_try = 0;
-	int i, j, k, m = 0;
+	int i, j = 0;
 	int city1, city2;	
 
 	// find path lengths for each ant

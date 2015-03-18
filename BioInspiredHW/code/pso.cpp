@@ -143,7 +143,7 @@ double fitswarm( double swarm[], double fitness[] )
 {
 	int i = 0;
 	double best_eval = 0.0;
-	double best_x;
+	double best_x = 0;
 
 	for( i = 0; i < POP; i++ )
 	{

@@ -18,7 +18,9 @@ The Traveling Salesman Problem is a popular problem in the field of computer sci
 \subsection{Implementation}
 Code for this may be found in Listing~\ref{tsp_aco.cpp}.
 
-The pseudocode for the simple ant colony optomization is presented in subsection ~\ref{acoPseudo}. This pseudocode has gone through a few revisions as code was written and moments of ``That's not going to work.'' occured. Currently, the code is written to read in cities locations from a file and create edges to form a complete graph with associated distances, pheromone, and visibilties. Next, a solution for each ant is built. A node is randomly selected for the starting point, a probability list (for moving to the next unvisited node) is constructed using Equation ~\ref{eqn5.5}, a random value is generated and checked against the probability list to see which node is next moved to. The selected node is then removed from the available nodes list, added to the visited list, and pheromone added to the edge. This repeats for each node until all nodes have been traversed.
+The pseudocode for the simple ant colony optomization is presented in subsection ~\ref{acoPseudo}. This pseudocode has gone through a few revisions as code was written and moments of ``That's not going to work.'' occured. 
+
+First, cities and their locations are read from a file and used to create a 2D array of edges with associated distances, pheromones, and visibilties. Next, a solution for each ant is built. A node is randomly selected for the starting point, a probability list (for moving to the next unvisited node) is constructed using Equation ~\ref{eqn5.5}, a random value is generated and checked against the probability list to see which node is next moved to. The selected node is then removed from the available nodes list, added to the visited list, and pheromone added to the edge. This repeats for each node until all nodes have been traversed.
 
 \begin{equation} \label{eqn5.5}
 p_{ij}^{k}(t) = 
@@ -37,7 +39,7 @@ Once the visited list for each ant has been built, the fitness of each path will
 \subsection{Analysis}
 There's a bug in the bug code. A struct to contain edge information such as start node, end node, pheromone level, distance and visibilty was created. Then a 2D array of those structs was created to hold all possible edges. The 2D array is filled such that no edge is repeatedly stored, so half of the array is filled. Pheromone is intialized to one for all edges. 
 
-During debugging of the move function, when accessing the pheromone information, occasionally the pheromone data would be 0 instead of 1. This could be an indexing issue, but on 3 hours of sleep, and checking the logic against several people, Stephanie can't figure out what's wrong. One would think that she would have learned from McGough's robotics class, his homeworks should really be started more than one week before it's due.
+During debugging of the move function, when accessing the pheromone information, occasionally the pheromone data would be 0 instead of 1. This could be an indexing issue, but on 3 hours of sleep, and checking the logic against several people, Stephanie can't figure out what's wrong. One would think that she would have learned from McGough's robotics class, his homeworks should really be started more than one week before it's due (even if that week is spring break).
 
 % S-ACO pseudocode
 \subsection{ S-ACO Pseudocode } \label{acoPseudo}
@@ -79,9 +81,7 @@ Expanding upon the evolutionary algorithms to solve the maximization problem of 
 Random points along the x-axis between zero and one are initialized as the population. Each individual is then assigned a random initial velocity between zero and one. Next, each individual's fitness is then evaluated and the best fit individual is tracked. Then a loop is entered for a specified number of time steps. During each time step, each individual's velocity is slightly perturbed, the fitness re-evaluatated, and new best fit positions are tracked. The code can be found in Listing~\ref{pso.cpp}.
 
 \subsection{Analysis}
-The trials for this implementation were run with a population size of twenty and 500 time steps. With these conditions, the particle swarm successfully found the global max within a small tolerance each time it was run, see Figure ~\ref{psoRun} for some sample runs. Compared to the simple hill climbing algorithm, particle swarm will always find the global extrema, whereas the simple hill climber will not. So, particle swarm is better than the simple hill climber. The iterated and stochastic hill climbers consistently found the global extrema, so particle swarm is on par with them. The same can be said for the genetic algorithm.
-
-Comments on run times can't be accurately made because python was used for some algorithms and c++ for the others. 
+The trials for this implementation were run with varing a population size from ten to twenty and time steps from ten to 200. Consistent answers were obtained with a population of fifteen and ten steps. When the population was dropped to ten, the correct answer would be calculated approximently 50\% of the time. Figure ~\ref{psoRun} shows some sample runs. The genetic algorithm consistently found correct solutions with a population as low as 10 and 100 steps. So, computationally, the particle swarm approach is faster than the genetic algorithm for this particular problem. 
 
 \begin{figure}[tbh]
 \begin{center}
