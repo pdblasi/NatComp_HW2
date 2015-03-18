@@ -35,6 +35,7 @@ double fit( double x );
 // Functions
 
 // Main - runs the helper functions
+// Author: Dr. McGough
 int main()
 {
 	int i, j = 0;
@@ -50,12 +51,17 @@ int main()
 	
 	while( j++ < STEPS )
 	{
+		// update positions and re-evaluate
 		for( i = 0; i < POP; i++ )
 		{
+			// acceleration constants
 			phi1 = rand()%200/1000.0 - 0.1;
 			phi2 = rand()%200/1000.0 - 0.1;
-
+		
+			// new velocity
 			vel[i] += phi1*(bestind[i] - swarm[i]) + phi2*(best - swarm[i]);
+			
+			// prevent invalid velocities
 			if( (swarm[i] + vel[i] > 0.0) && (swarm[i]+vel[i] < 2.0) )
 			{
 				swarm[i] += vel[i];
@@ -63,6 +69,7 @@ int main()
 			}
 		}
 		
+		// update best fit for each individual and best individual
 		for( i = 0; i < POP; i++ )
 		{
 			if( fitness[i] > fitbest[i] )
@@ -70,13 +77,13 @@ int main()
 				bestind[i] = swarm[i];
 				fitbest[i] = fitness[i];
 			}
+			
 			if( fitness[i] > top )
 			{
 				best = swarm[i];
 				top = fitness[i];
 			}
 		}
-
 	}
 
 	cout << "Best is: " << best << endl;
@@ -85,11 +92,11 @@ int main()
 }
 
 // initialize particle positions
+// Author: Stephanie Athow
 void initswarm( double swarm[] )
 {
 	int i = 0;
-	float pos;
-
+	
 	for( i = 0; i < POP; i++ )
 	{
 		swarm[i]  = ( rand()/ (double)(RAND_MAX) );
@@ -99,6 +106,7 @@ void initswarm( double swarm[] )
 }
 
 // initialize particle velocities
+// Author: Stephanie Athow
 void initvel( double vel[] )
 {
 	int i = 0;
@@ -130,6 +138,7 @@ void printvel( double vel[] )
 }
 
 // determine each particle's fitness
+// Author: Stephanie Athow
 double fitswarm( double swarm[], double fitness[] )
 {
 	int i = 0;
@@ -154,11 +163,12 @@ double fitswarm( double swarm[], double fitness[] )
 
 // Equation evaluation from example 3.3.3
 // g(x) = 2^(-2((x-0.1)/0.9)^2) *( sin(5*pi*x) )^6
+// Author: Stephanie Athow
 double fit( double x )
 {
 	double exponent, fit;
 
-	if( ( x > 0 ) && (x < 1) )
+	if( ( x > 0 ) && ( x < 1 ) )
 	{
 		exponent = -2 * pow( ( ( x - 0.1 ) / 0.9 ) , 2);
 		fit = pow(2, exponent) * pow( (sin(5*M_PI*x)), 6 );
