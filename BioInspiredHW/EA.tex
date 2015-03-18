@@ -23,6 +23,10 @@ Stochastic Hill Climb: \\
 
 The stochastic hill climb is quite similar to the simple hill climb, with one change that makes a significant difference. When the point is perturbed, it is perturbed randomly and its acceptance as a new point is probabilistically determined with Equation~\ref{eqn_1.2} The value of T plays an important part in this equation. T determines the decay of the exponential function. In plain words, T determines how important the relative difference between the evaluation of x and x' is. A large T will make the search very similar to a random search and does not provide consistent results. When T is small, local extremas can be escaped and global extremas found with fairly consistent results.  \\
 
+Simulated Annealing: \\
+
+The simulated annealing algorithm is very similar in concept to the stochastic hill climbing method. The difference is in the T value, which instead of being set, starts at a large value and becomes much smaller over the algorithm's execution. This allows the algorithm to start out as nearly random and lets it more fully cover the search space. As the algorithm continues, the probability of it jumping out of the current extrema gets smaller. This combination gets the algorithm to completely cover the search space and then concentrate itself on the global extrema instead of the local ones.
+
 \begin{equation}\label{eqn_1.2}
 P = 1 / ( 1 + exp[ ( eval(x) - eval(x') ) / T ] )
 \end{equation}
@@ -32,7 +36,9 @@ A few sample runs of the various hill climb algorthims can be found in Figure~\r
 
 \begin{figure}[tbh]
 \begin{center}
-\includegraphics[width=0.75\textwidth]{HillClimb.PNG}
+\includegraphics[width=0.47\textwidth]{HillClimb}
+\hspace{20pt}
+\includegraphics[width=0.47\textwidth]{SimulatedAnnealing}
 \end{center}
 \caption{Sample Hill Climb Algorithms Answers \label{hill_climb} }
 \end{figure}
@@ -68,6 +74,8 @@ Between choosing each index the value at the chosen index is subtracted from the
 \subsection{Analysis}
 Through multiple runs with different parameters, it was found that a genetic algorithm could solve this problem consistently with an initial population as low as 10 individuals in 250 iterations. The fastest consistent solution came from runs with around 100 individuals and 100 iterations. If more iterations were run it was able to get more precise, giving an answer of .0999923704891 for a max of .999999956813. Taking into account that the encoding isn't perfect this probably means we have the global max at .1 with a value of 1.
 
+In comparison with the other methods summarized in the previous problem the genetic algorithm is rather slow. But it has a much wider range of effective input parameters and when compared to a simple hill climbing algorithm gets the right solution much more often.
+
 
 \newpage
 \section{Problem 7}
@@ -78,7 +86,7 @@ Through multiple runs with different parameters, it was found that a genetic alg
 \item \textbf{Function set: F = {+, *}}
 \item \textbf{Terminal set: T = {0, 1, 2, 3, 4, 5, x}}
 \end{itemize}
-\centerline{\begin{tabular}{ c c }
+\centerline{\begin{tabular}{| c | c |}
 \hline
 x & Program output \\
 \hline
@@ -127,7 +135,7 @@ x & Program output \\
 \end{tabular}}
 
 \subsubsection{Summary}
-For this problem we originally intended to use BNF encoding and the related crossover and mutation operators with it. We were not able to get BNF encoding to work well as we were unsure of how to validate a string of integers as being a valid string. We then moved to an adapted simple genetic algorithm that worked on a prefix format equation. From that point validating the string, and that the resulting tree was limited to a depth of four was much easier.
+For this problem we originally intended to use BNF encoding and the related crossover and mutation operators with it. We were not able to get BNF encoding to work well as we were unsure of how to validate a string of integers as being a valid string. We then moved to an adapted simple genetic algorithm that worked on a prefix format equation. This encoding made validating the string and ensuring that the resulting tree was limited to a depth of four much easier.
 
 \subsubsection{Encoding}
 As stated above the encoding is as a prefix formatted equation. This format is easy to do crossover with (when we set the format of the equation in stone), but mutation has to check for two different cases of mutation. One for operators and one for terminals. The operators and terminals are given from the problem and explicitly stated below. \\
@@ -163,7 +171,7 @@ This evaluates to the following tree:
 As you can see, this is not a particularly useful individual, so we copy it and randomize it through mutation to sample the search space.
 
 \subsubsection{Crossover \& Mutation}
-Crossover was even simpler in this problem than in the previous. Our prefix equation was stored as a list of strings, so we split the list at a random crossover point and split and recombined the mother and father into a child.
+Crossover was even simpler in this problem than in the previous. Our prefix equation was stored as a list of strings, so we split the mother and father lists at a random crossover point and recombined them into a child.
 
 Mutation was more complicated in this problem but only marginally so. The complication was that there are two parts to the individuals using our encoding. There were the operators and the terminals. Since the locations of these are fixed, we stored the locations of each in a separate list, and if our randomly selected mutation index is in the operator index list we replace the value with a random operator. If the mutation index is in the terminals index list we replace the value with a random terminal.
 
@@ -177,4 +185,25 @@ When using a population of 250 and up to 1000 iterations (up to because we can s
 
 Because we didn't want to fully analyze 100 different prefix notation equations, we randomly picked 10 to evaluate. These are listed below.
 
+\begin{center}
+\begin{tabular}{| c | c | c |}
+\hline
+Solution & Prefix & Simplified \\ \hline \hline
+52 & \hspace{5pt} $+\;\;+\;\;*\;\;x\;\;x\;\;*\;\;x\;\;x\;\;+\;\;*\;\;x\;\;4\;\;+\;\;3\;\;x$ \hspace{5pt} & \hspace{5pt} $2x^2 + 5x + 3$ \hspace{5pt} \\ \hline
+81 & \hspace{5pt} $+\;\;*\;\;+\;\;0\;\;x\;\;+\;\;x\;\;x\;\;+\;\;+\;\;2\;\;1\;\;*\;\;5\;\;x$ \hspace{5pt} & \hspace{5pt} $2x^2 + 5x + 3$ \hspace{5pt} \\ \hline
+49 & \hspace{5pt} $+\;\;+\;\;+\;\;3\;\;x\;\;*\;\;x\;\;x\;\;*\;\;+\;\;x\;\;0\;\;+\;\;x\;\;4$ \hspace{5pt} & \hspace{5pt} $2x^2 + 5x + 3$ \hspace{5pt} \\ \hline
+93 & \hspace{5pt} $*\;\;+\;\;+\;\;x\;\;0\;\;+\;\;0\;\;1\;\;+\;\;+\;\;2\;\;1\;\;*\;\;2\;\;x$ \hspace{5pt} & \hspace{5pt} $2x^2 + 5x + 3$ \hspace{5pt} \\ \hline
+47 & \hspace{5pt} $+\;\;+\;\;*\;\;x\;\;5\;\;+\;\;3\;\;0\;\;*\;\;+\;\;0\;\;2\;\;*\;\;x\;\;x$ \hspace{5pt} & \hspace{5pt} $2x^2 + 5x + 3$ \hspace{5pt} \\ \hline
+26 & \hspace{5pt} $*\;\;+\;\;+\;\;x\;\;2\;\;+\;\;x\;\;1\;\;+\;\;+\;\;x\;\;0\;\;+\;\;1\;\;0$ \hspace{5pt} & \hspace{5pt} $2x^2 + 5x + 3$ \hspace{5pt} \\ \hline
+62 & \hspace{5pt} $+\;\;+\;\;*\;\;x\;\;x\;\;+\;\;3\;\;x\;\;+\;\;*\;\;x\;\;4\;\;*\;\;x\;\;x$ \hspace{5pt} & \hspace{5pt} $2x^2 + 5x + 3$ \hspace{5pt}  \\ \hline
+68 & \hspace{5pt} $*\;\;+\;\;+\;\;x\;\;x\;\;+\;\;0\;\;3\;\;+\;\;*\;\;2\;\;0\;\;+\;\;1\;\;x$ \hspace{5pt} & \hspace{5pt} $2x^2 + 5x + 3$ \hspace{5pt}  \\ \hline
+42 & \hspace{5pt} $*\;\;+\;\;*\;\;0\;\;3\;\;+\;\;x\;\;1\;\;+\;\;+\;\;3\;\;x\;\;+\;\;0\;\;x$ \hspace{5pt} & \hspace{5pt} $2x^2 + 5x + 3$ \hspace{5pt}  \\ \hline
+29 & \hspace{5pt} $+\;\;*\;\;+\;\;2\;\;x\;\;+\;\;x\;\;x\;\;+\;\;+\;\;x\;\;3\;\;+\;\;0\;\;0$ \hspace{5pt} & \hspace{5pt} $2x^2 + 5x + 3$ \hspace{5pt}  \\ \hline
+\end{tabular}
+\end{center}
 
+Summarizing these, it looks like the equation is
+
+\begin{equation}\label{p7_solution}
+2x^2 + 5x + 3
+\end{equation}

@@ -2,6 +2,28 @@
 
 \chapter{Immunocomputing - Text Chapter 6}
 
+\section{Problem 1}
+\textbf{Use a bone marrow algorithm to define genes for gene libraries to be used to generate the initial population of a genetic algorithm to solve the TSP problem presented in Chapter 3 and Chapter 5 (Figure 6.24). Assume the following structure for the gene libraries:}
 
+\textbf{Gene length $L_g = 4$, number of libraries $n = 8$, and library length (number of genes in each library) $L_l = 4$. As one gene for each library will be selected, the total chromosome length is $L = Lg \times n = 4 \times 8 = 32$, that corresponds to the number of cities in a tour.}
 
+\textbf{Each gene will be defined as a sequence of four cities known to be part of an optimal route. Since many of the chromosomes produced will contain repeated values, a repair function must be created.}
 
+\textbf{Implement this bone marrow model to define an initial population of chromosomes to be used in an evolutionary algorithm to solve the TSP problem illustrated. Compare the performance of the algorithm with this type of initialization procedure and with the random initialization used in Project 1, Section 3.10.4}
+
+\subsection{Summary}
+Since we did not do Project 1 for this homework assignment, we won't be comparing the performance of the populations. This algorithm is pretty simple, so we packaged it into a reusable class for future work. The code can be found in Listing~\ref{BoneMarrow.py}.
+
+\subsection{Implementation}
+As stated above, we packaged the process into a generic class to allow it to be used for various problems.
+
+\subsubsection{Libraries}
+We decided to let there be two methods of adding a library. You can add a complete library, or create a library with a gene generator function. In some initial thoughts, a mutator function could also be passed in, but this was out of the scope of the function and not necessary for the problem.
+
+\subsubsection{Chromosomes}
+With our class you can create single or sets of chromosomes. The chromosomes are run through a repair function that is passed into the constructor of the class before being returned or added to the return list. The method of making the chromosomes is pretty straight forward. Start with a random element from the first library and add random genes from the rest of the libraries in the order added until the chromosome is complete.
+
+\subsection{Analysis}
+This seems to be a quick way to generate more complex encodings than using a purely random method. It would have been a nice addition to Chapter~3~Problem~7, as the prefix notation was made of very specific parts, but they were different from each other and had to go in order. It may be used in that problem for future analysis
+
+In our testing two different generators were used, one with random strings for genes, and one with a subset of the optimal path (seen in Figure~6.24 in the text). Running the python file generates and prints both of these sets to the screen.
